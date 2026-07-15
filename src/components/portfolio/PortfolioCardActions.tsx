@@ -2,9 +2,13 @@
 
 import { useState, useTransition } from "react";
 import Link from "next/link";
-import { Edit2, Trash2, Loader2, MoreVertical } from "lucide-react";
+import { Edit2, Trash2, Loader2, MoreVertical, Send, Undo2 } from "lucide-react";
 import { toast } from "sonner";
-import { deletePortfolioAction } from "@/actions/portfolio.actions";
+import {
+  deletePortfolioAction,
+  publishPortfolioAction,
+  unpublishPortfolioAction,
+} from "@/actions/portfolio.actions";
 import { ROUTES } from "@/constants";
 
 import { Button } from "@/components/ui/button";
@@ -24,8 +28,15 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-export default function PortfolioCardActions({ id, title }: { id: string; title: string }) {
+interface PortfolioCardActionsProps {
+  id: string;
+  title: string;
+  status?: "draft" | "published";
+}
+
+export default function PortfolioCardActions({ id, title, status = "draft" }: PortfolioCardActionsProps) {
   const [isPending, startTransition] = useTransition();
+  const [isTogglingStatus, startStatusTransition] = useTransition();
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
 
   const handleDelete = () => {
@@ -40,16 +51,46 @@ export default function PortfolioCardActions({ id, title }: { id: string; title:
     });
   };
 
+  const handleToggleStatus = () => {
+    startStatusTransition(async () => {
+      const action = status === "published" ? unpublishPortfolioAction : publishPortfolioAction;
+      const res = await action(id);
+      if (res.success) {
+        toast.success(res.message);
+      } else {
+        toast.error(res.message);
+      }
+    });
+  };
+
   return (
     <>
       <DropdownMenu>
         <DropdownMenuTrigger className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-8 w-8 bg-background/80 backdrop-blur-sm z-10">
           <>
-            <MoreVertical className="h-4 w-4" />
+            {isTogglingStatus ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <MoreVertical className="h-4 w-4" />
+            )}
             <span className="sr-only">Menu Actions</span>
           </>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
+          <DropdownMenuItem onClick={handleToggleStatus} disabled={isTogglingStatus} className="cursor-pointer">
+            {status === "published" ? (
+              <>
+                <Undo2 className="mr-2 h-4 w-4" />
+                Jadikan Draft
+              </>
+            ) : (
+              <>
+                <Send className="mr-2 h-4 w-4" />
+                Publish
+              </>
+            )}
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
           <DropdownMenuItem>
             <Link href={`${ROUTES.DASHBOARD}/portfolio/${id}/edit`} className="cursor-pointer flex items-center w-full h-full">
               <Edit2 className="mr-2 h-4 w-4" />

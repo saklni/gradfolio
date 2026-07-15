@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPublicPortfolioAction } from "@/actions/portfolio.actions";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, ExternalLink, Calendar, User } from "lucide-react";
+import { Calendar, User } from "lucide-react";
 import ShareButton from "@/components/portfolio/ShareButton";
-import { ROUTES } from "@/constants";
+import { RESOURCE_TYPE_LABELS } from "@/constants";
+import { RESOURCE_TYPE_ICONS } from "@/lib/resource-icons";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 
 export async function generateMetadata({
   params,
@@ -54,31 +54,20 @@ export default async function PortfolioSharePage({
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Simple Header */}
-      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-14 max-w-screen-2xl items-center mx-auto px-4">
-          <Link
-            href="/"
-            className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            <span className="text-sm font-medium">Kembali ke Showcase</span>
-          </Link>
-          <div className="flex flex-1 items-center justify-end space-x-2">
-            <ShareButton title={item.title} text={item.deskripsi_singkat} />
-          </div>
-        </div>
-      </header>
+      <Navbar />
 
       <main className="flex-1 w-full max-w-4xl mx-auto px-4 py-8 md:py-12">
         <article className="space-y-8">
           {/* Header Info */}
           <div className="space-y-4">
-            <div className="flex flex-wrap items-center gap-2">
-              <Badge variant="secondary">{item.category}</Badge>
-              <Badge variant="outline">{item.jenis_portfolio}</Badge>
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge variant="secondary">{item.category}</Badge>
+                <Badge variant="outline">{item.jenis_portfolio}</Badge>
+              </div>
+              <ShareButton title={item.title} text={item.deskripsi_singkat} />
             </div>
-            
+
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight">
               {item.title}
             </h1>
@@ -191,18 +180,29 @@ export default async function PortfolioSharePage({
                 <div className="rounded-xl border border-border/60 bg-card p-5 shadow-sm space-y-4">
                   <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Tautan Terkait</h3>
                   <div className="flex flex-col gap-2">
-                    {item.resources.map((resource) => (
-                      <a 
-                        key={resource.id} 
-                        href={resource.url} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground w-full justify-start h-auto py-2.5 px-3"
-                      >
-                        <ExternalLink className="h-4 w-4 mr-2 shrink-0 text-muted-foreground" />
-                        <span className="truncate">{resource.label || resource.resource_type}</span>
-                      </a>
-                    ))}
+                    {item.resources.map((resource) => {
+                      const ResourceIcon =
+                        RESOURCE_TYPE_ICONS[
+                          resource.resource_type as keyof typeof RESOURCE_TYPE_ICONS
+                        ] ?? RESOURCE_TYPE_ICONS.other;
+                      const typeLabel =
+                        RESOURCE_TYPE_LABELS[
+                          resource.resource_type as keyof typeof RESOURCE_TYPE_LABELS
+                        ] ?? resource.resource_type;
+
+                      return (
+                        <a
+                          key={resource.id}
+                          href={resource.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group inline-flex items-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground w-full justify-start h-auto py-2.5 px-3"
+                        >
+                          <ResourceIcon className="h-4 w-4 mr-2 shrink-0 text-muted-foreground group-hover:text-primary transition-colors" />
+                          <span className="truncate">{resource.label || typeLabel}</span>
+                        </a>
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -210,6 +210,8 @@ export default async function PortfolioSharePage({
           </div>
         </article>
       </main>
+
+      <Footer />
     </div>
   );
 }

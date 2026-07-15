@@ -13,6 +13,7 @@ import type {
   PortfolioItem,
   PortfolioItemUpdate,
   PortfolioItemWithResources,
+  PortfolioItemWithOwner,
   PortfolioItemFull,
 } from "@/types/portfolio.types";
 
@@ -545,7 +546,7 @@ export async function getAllPublicPortfoliosAction({
 }: {
   search?: string;
   category?: string;
-} = {}): Promise<ActionResponse<any[]>> {
+} = {}): Promise<ActionResponse<PortfolioItemWithOwner[]>> {
   try {
     const supabase = await createClient();
 

@@ -4,13 +4,13 @@
 
 "use client";
 
-import { useState, useTransition, useEffect, useRef } from "react";
+import { useState, useTransition, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
-import { Loader2, Camera, Upload, Trash2 } from "lucide-react";
+import { Loader2, Upload, Trash2 } from "lucide-react";
 import Image from "next/image";
 
 import { profileSchema, onboardingSchema } from "@/schemas/profile.schema";
@@ -55,6 +55,7 @@ export default function ProfileForm({ initialData, mode }: ProfileFormProps) {
   const [avatarPreview, setAvatarPreview] = useState<string | null>(
     initialData?.avatar_url || null
   );
+  const [selectedAvatar, setSelectedAvatar] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -92,6 +93,7 @@ export default function ProfileForm({ initialData, mode }: ProfileFormProps) {
     const objectUrl = URL.createObjectURL(file);
     setAvatarPreview(objectUrl);
     form.setValue("avatarFile", file);
+    setSelectedAvatar(file);
 
     // Immediate upload for settings mode (better UX)
     if (isSettings && initialData) {
@@ -117,6 +119,7 @@ export default function ProfileForm({ initialData, mode }: ProfileFormProps) {
           toast.error(data.message || "Gagal mengunggah foto profil");
         }
       } catch (error) {
+        console.error("Avatar upload error:", error);
         toast.error("Terjadi kesalahan saat mengunggah foto profil");
       } finally {
         setIsUploading(false);
@@ -127,11 +130,11 @@ export default function ProfileForm({ initialData, mode }: ProfileFormProps) {
   function onSubmit(data: FormValues) {
     startTransition(async () => {
       // If in onboarding and avatar is selected, upload it first
-      if (!isSettings && data.avatarFile) {
+      if (!isSettings && selectedAvatar) {
         try {
           setIsUploading(true);
           const avatarFormData = new FormData();
-          avatarFormData.append("file", data.avatarFile);
+          avatarFormData.append("file", selectedAvatar);
 
           const res = await fetch("/api/upload/avatar", {
             method: "POST",
@@ -146,6 +149,7 @@ export default function ProfileForm({ initialData, mode }: ProfileFormProps) {
             return;
           }
         } catch (error) {
+          console.error("Avatar upload error:", error);
           toast.error("Terjadi kesalahan saat mengunggah foto profil");
           setIsUploading(false);
           return;
@@ -167,7 +171,7 @@ export default function ProfileForm({ initialData, mode }: ProfileFormProps) {
       if (response.success) {
         toast.success(response.message);
         if (!isSettings) {
-          router.push(ROUTES.DASHBOARD);
+          window.location.href = ROUTES.DASHBOARD;
         } else {
           router.refresh();
         }

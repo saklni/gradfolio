@@ -84,6 +84,12 @@ export const RESOURCE_TYPE_LABELS: Record<ResourceType, string> = {
 };
 
 /**
+ * Default resource type used when a new (empty) resource row is added
+ * to a portfolio item form. Must always be a valid member of RESOURCE_TYPES.
+ */
+export const DEFAULT_RESOURCE_TYPE: ResourceType = "github";
+
+/**
  * Semester options for portfolio items.
  */
 export const SEMESTERS = [1, 2, 3, 4, 5, 6, 7, 8] as const;

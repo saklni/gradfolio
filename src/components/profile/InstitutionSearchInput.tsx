@@ -6,12 +6,12 @@
 
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Check, ChevronsUpDown, Loader2 } from "lucide-react";
 import { useDebounce } from "use-debounce";
 
 import { cn } from "@/lib/utils";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -100,13 +100,15 @@ export default function InstitutionSearchInput({
       if (!error && data) {
         setInstitutions((prev) => [data, ...prev]);
         handleSelect(data.name);
-      } else if (error?.code === '23505') {
-        // Unique violation - already exists
+      } else {
+        if (error?.code !== '23505') {
+          console.error("Failed to create institution (Supabase error):", error);
+        }
+        // Fallback to just using the string value even if not saved to DB (e.g., blocked by RLS)
         handleSelect(newName);
       }
     } catch (error) {
       console.error("Failed to create institution", error);
-      // Fallback to just using the string value even if not saved to DB
       handleSelect(newName);
     } finally {
       setIsLoading(false);
@@ -170,7 +172,7 @@ export default function InstitutionSearchInput({
                       className="text-primary italic"
                     >
                       <Check className="mr-2 h-4 w-4 opacity-0" />
-                      Gunakan "{searchQuery}"
+                      Gunakan &quot;{searchQuery}&quot;
                     </CommandItem>
                   )}
                 </CommandGroup>

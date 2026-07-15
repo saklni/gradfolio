@@ -4,6 +4,7 @@
 
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { profileSchema, onboardingSchema } from "@/schemas/profile.schema";
 import type { ActionResponse, Profile } from "@/types/portfolio.types";
@@ -44,15 +45,20 @@ export async function updateProfileAction(
       return { success: false, message: "Unauthorized" };
     }
 
-    const { error } = await supabase
+    const { data: updatedRow, error } = await supabase
       .from("profiles")
-      .update({
-        ...validationResult.data,
-        updated_at: new Date().toISOString(),
-      })
-      .eq("id", user.id);
+      .upsert(
+        {
+          id: user.id,
+          ...validationResult.data,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: "id" }
+      )
+      .select()
+      .single();
 
-    if (error) {
+    if (error || !updatedRow) {
       console.error("Profile update error:", error);
       return {
         success: false,
@@ -60,6 +66,8 @@ export async function updateProfileAction(
       };
     }
 
+    revalidatePath("/", "layout");
+    
     return {
       success: true,
       message: "Profil berhasil diperbarui.",
@@ -109,15 +117,20 @@ export async function completeOnboardingAction(
       return { success: false, message: "Unauthorized" };
     }
 
-    const { error } = await supabase
+    const { data: updatedRow, error } = await supabase
       .from("profiles")
-      .upsert({
-        id: user.id,
-        ...validationResult.data,
-        updated_at: new Date().toISOString(),
-      });
+      .upsert(
+        {
+          id: user.id,
+          ...validationResult.data,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: "id" }
+      )
+      .select()
+      .single();
 
-    if (error) {
+    if (error || !updatedRow) {
       console.error("Onboarding error:", error);
       return {
         success: false,
@@ -125,6 +138,8 @@ export async function completeOnboardingAction(
       };
     }
 
+    revalidatePath("/", "layout");
+    
     return {
       success: true,
       message: "Profil berhasil dilengkapi.",

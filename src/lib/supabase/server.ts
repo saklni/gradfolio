@@ -10,8 +10,8 @@ import { cookies } from "next/headers";
 import type { Database } from "@/types/database.types";
 
 // Polyfill for Node.js 20 and below where WebSocket is not native
-if (typeof globalThis !== 'undefined' && !globalThis.WebSocket) {
-  (globalThis as any).WebSocket = class WebSocket {};
+if (typeof globalThis !== "undefined" && !("WebSocket" in globalThis)) {
+  (globalThis as unknown as { WebSocket: unknown }).WebSocket = class WebSocket {};
 }
 
 export async function createClient() {

@@ -8,9 +8,9 @@ import { toast } from "sonner";
 import { Loader2, Save, Send } from "lucide-react";
 
 import { z } from "zod";
-import { portfolioSchema } from "@/schemas/portfolio.schema";
+import { portfolioSchema, type ResourceFormData } from "@/schemas/portfolio.schema";
 import { createPortfolioAction, updatePortfolioAction } from "@/actions/portfolio.actions";
-import { ROUTES, CATEGORIES, JENIS_PORTFOLIO } from "@/constants";
+import { ROUTES, CATEGORIES, JENIS_PORTFOLIO, type Category, type JenisPortfolio } from "@/constants";
 import type { PortfolioItemFull } from "@/types/portfolio.types";
 
 import { Button } from "@/components/ui/button";
@@ -52,8 +52,8 @@ export default function PortfolioForm({ initialData }: PortfolioFormProps) {
     resolver: zodResolver(portfolioSchema),
     defaultValues: {
       title: initialData?.title || "",
-      category: (initialData?.category as any) || CATEGORIES[0],
-      jenis_portfolio: (initialData?.jenis_portfolio as any) || JENIS_PORTFOLIO[0],
+      category: (initialData?.category as Category) || CATEGORIES[0],
+      jenis_portfolio: (initialData?.jenis_portfolio as JenisPortfolio) || JENIS_PORTFOLIO[0],
       semester: initialData?.semester || undefined,
       tahun_pengerjaan: initialData?.tahun_pengerjaan || new Date().getFullYear(),
       deskripsi_singkat: initialData?.deskripsi_singkat || "",
@@ -61,7 +61,7 @@ export default function PortfolioForm({ initialData }: PortfolioFormProps) {
       peran: initialData?.peran || "",
       status: initialData?.status || "draft",
       tech_stack: initialData?.tech_stack || [],
-      resources: (initialData?.resources as any) || [],
+      resources: (initialData?.resources as ResourceFormData[]) || [],
     },
   });
 
@@ -102,6 +102,7 @@ export default function PortfolioForm({ initialData }: PortfolioFormProps) {
             return;
           }
         } catch (err) {
+          console.error("Cover upload error:", err);
           toast.error("Terjadi kesalahan saat mengunggah cover");
           setIsUploading(false);
           return;
@@ -200,7 +201,7 @@ export default function PortfolioForm({ initialData }: PortfolioFormProps) {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Kategori <span className="text-destructive">*</span></FormLabel>
-                      <Select disabled={isPending} onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select disabled={isPending} onValueChange={field.onChange} value={field.value}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Pilih Kategori" />
@@ -223,7 +224,7 @@ export default function PortfolioForm({ initialData }: PortfolioFormProps) {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Jenis Portfolio <span className="text-destructive">*</span></FormLabel>
-                      <Select disabled={isPending} onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select disabled={isPending} onValueChange={field.onChange} value={field.value}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Pilih Jenis" />

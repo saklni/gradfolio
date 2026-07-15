@@ -6,7 +6,6 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { loginSchema, registerSchema } from "@/schemas/auth.schema";
-import { redirect } from "next/navigation";
 import type { ActionResponse } from "@/types/portfolio.types";
 
 /**
@@ -138,9 +137,18 @@ export async function loginAction(
 
 /**
  * Logout the current user.
+ *
+ * IMPORTANT: This does NOT call redirect() here. redirect() throws a special
+ * NEXT_REDIRECT signal that Next.js only reliably intercepts when a Server
+ * Action is submitted via a <form action={...}>. When a Server Action is
+ * instead invoked imperatively from a client event handler (e.g. a dropdown
+ * menu "Keluar" button, as in Navbar.tsx), that signal can surface as an
+ * unhandled rejection instead of navigating — which looked like "logout
+ * tidak berfungsi". The caller is responsible for navigating away (see
+ * Navbar's handleLogout, which does a hard `window.location.href` redirect
+ * after this resolves, ensuring middleware and all cached user state reset).
  */
 export async function logoutAction(): Promise<void> {
   const supabase = await createClient();
   await supabase.auth.signOut();
-  redirect("/");
 }

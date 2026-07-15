@@ -7,8 +7,8 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { GraduationCap, Menu, X, LogOut, LayoutDashboard, User } from "lucide-react";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { GraduationCap, Menu, LogOut, LayoutDashboard, User } from "lucide-react";
+import { buttonVariants } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -23,6 +23,7 @@ import { logoutAction } from "@/actions/auth.actions";
 import { getInitials } from "@/utils";
 import { ROUTES } from "@/constants";
 import type { Profile } from "@/types/portfolio.types";
+import ModeToggle from "@/components/mode-toggle";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -70,11 +71,20 @@ export default function Navbar() {
     return () => subscription.unsubscribe();
   }, []);
 
-  const isDashboard = pathname.startsWith("/dashboard");
-
   const navLinks = [
     { href: ROUTES.HOME, label: "Showcase" },
   ];
+
+  const handleLogout = async () => {
+    // logoutAction only signs the user out server-side and does NOT call
+    // redirect() itself — redirect() throws a special error that isn't
+    // reliably caught when a Server Action is invoked imperatively (as an
+    // onClick handler) instead of via a <form action>. A hard navigation
+    // here guarantees the browser leaves the page, middleware re-runs, and
+    // all cached client state (user/profile) is cleared.
+    await logoutAction();
+    window.location.href = ROUTES.HOME;
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/80 backdrop-blur-lg supports-[backdrop-filter]:bg-background/60">
@@ -109,6 +119,7 @@ export default function Navbar() {
 
         {/* Desktop Auth */}
         <div className="hidden md:flex items-center gap-3">
+          <ModeToggle />
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger className="relative flex h-9 w-9 items-center justify-center rounded-full outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring">
@@ -136,19 +147,19 @@ export default function Navbar() {
                   </div>
                 </div>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onSelect={() => router.push(ROUTES.DASHBOARD)} className="cursor-pointer">
+                <DropdownMenuItem onClick={() => router.push(ROUTES.DASHBOARD)} className="cursor-pointer">
                   <LayoutDashboard className="mr-2 h-4 w-4" />
                   Dashboard
                 </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => router.push(ROUTES.DASHBOARD_PROFILE)} className="cursor-pointer">
+                <DropdownMenuItem onClick={() => router.push(ROUTES.DASHBOARD_PROFILE)} className="cursor-pointer">
                   <User className="mr-2 h-4 w-4" />
                   Profil
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   className="cursor-pointer text-destructive focus:text-destructive"
-                  onSelect={async () => {
-                    await logoutAction();
+                  onClick={() => {
+                    void handleLogout();
                   }}
                 >
                   <LogOut className="mr-2 h-4 w-4" />
@@ -169,7 +180,8 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Menu */}
-        <div className="md:hidden">
+        <div className="md:hidden flex items-center gap-1">
+          <ModeToggle />
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             <SheetTrigger className="inline-flex h-10 w-10 items-center justify-center rounded-md hover:bg-accent hover:text-accent-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring">
               <Menu className="h-5 w-5" />
@@ -238,9 +250,9 @@ export default function Navbar() {
                         Profil
                       </Link>
                       <button
-                        onClick={async () => {
+                        onClick={() => {
                           setMobileMenuOpen(false);
-                          await logoutAction();
+                          void handleLogout();
                         }}
                         className="flex items-center gap-2 px-3 py-2.5 text-sm text-destructive rounded-md hover:bg-destructive/10 w-full text-left"
                       >

@@ -54,6 +54,11 @@ export const onboardingSchema = profileSchema.extend({
     .min(1, "Program studi wajib diisi")
     .max(VALIDATION_LIMITS.PROGRAM_STUDI_MAX, `Program studi maksimal ${VALIDATION_LIMITS.PROGRAM_STUDI_MAX} karakter`)
     .trim(),
+  angkatan: z
+    .number({ error: "Tahun angkatan wajib diisi" })
+    .int("Angkatan harus berupa tahun")
+    .min(1900, "Tahun angkatan tidak valid")
+    .max(new Date().getFullYear() + 1, "Tahun angkatan tidak valid"),
 });
 
 export type OnboardingFormData = z.infer<typeof onboardingSchema>;

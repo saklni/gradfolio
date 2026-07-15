@@ -29,7 +29,7 @@ export default function PortfolioCard({ item, showStatus = false }: PortfolioCar
           >
             {item.status === "published" ? "Published" : "Draft"}
           </Badge>
-          <PortfolioCardActions id={item.id} title={item.title} />
+          <PortfolioCardActions id={item.id} title={item.title} status={item.status} />
         </div>
       )}
 

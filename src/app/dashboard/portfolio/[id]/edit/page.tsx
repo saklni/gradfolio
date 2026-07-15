@@ -7,6 +7,7 @@ import { ROUTES } from "@/constants";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/server";
+import type { PortfolioItemFull } from "@/types/portfolio.types";
 
 export const metadata: Metadata = {
   title: "Edit Portfolio",
@@ -67,7 +68,7 @@ export default async function EditPortfolioPage({
           </div>
         </div>
         
-        <PortfolioForm initialData={portfolio as any} />
+        <PortfolioForm initialData={portfolio as unknown as PortfolioItemFull} />
       </div>
     </main>
   );
