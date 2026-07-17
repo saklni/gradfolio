@@ -44,13 +44,14 @@ Lihat `PROJECT_SPEC.md` untuk spesifikasi produk lengkap (business rules, databa
 
 3. **Setup database**
 
-   Buka Supabase SQL Editor pada project Anda, lalu jalankan seluruh isi file:
+   Buka Supabase SQL Editor pada project Anda, lalu jalankan **kedua** file migrasi berikut **secara berurutan**:
 
    ```
    supabase/migrations/001_initial_schema.sql
+   supabase/migrations/002_portfolio_collections.sql
    ```
 
-   Migrasi ini akan membuat seluruh tabel (`profiles`, `institutions`, `portfolio_items`, `portfolio_resources`), mengaktifkan Row Level Security beserta policy-nya, trigger auto-create profile saat registrasi, dan seed data institusi awal.
+   Migrasi `001` membuat tabel inti (`profiles`, `institutions`, `portfolio_items`, `portfolio_resources`), RLS, trigger auto-create profile, dan seed data institusi. Migrasi `002` menambahkan fitur **Bagikan Portofolio** — tabel `portfolio_collections` dan `collection_items` yang memungkinkan mahasiswa membuat satu link berisi beberapa karya sekaligus untuk dikirim ke HRD/recruiter.
 
 4. **Jalankan development server**
 
@@ -99,6 +100,7 @@ supabase/
 - CRUD Portfolio Item (draft/published) dengan upload cover ke Cloudinary
 - Project Resources (GitHub, Live Demo, Google Drive, Figma, YouTube, Dokumentasi, PDF)
 - Project Showcase publik dengan pencarian & filter kategori
-- Portfolio Share — halaman detail lengkap yang bisa dibagikan lewat satu tautan
+- Portfolio Share — halaman detail lengkap satu karya yang bisa dibagikan lewat satu tautan
+- **Bagikan Portofolio** — pilih beberapa karya published sekaligus, buat satu link (`/share/[id]`), kirim ke HRD/recruiter yang bisa langsung melihat semua karya pilihan tanpa login
 - Dashboard dengan statistik & aksi cepat (edit, publish/unpublish, hapus)
 - Dark mode & tampilan responsif penuh (mobile-first)

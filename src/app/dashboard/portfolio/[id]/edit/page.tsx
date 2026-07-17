@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 import { ChevronLeft } from "lucide-react";
 import PortfolioForm from "@/components/portfolio/PortfolioForm";
 import { ROUTES } from "@/constants";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/server";
-import type { PortfolioItemFull } from "@/types/portfolio.types";
+import { getPortfolioWithResourcesAction } from "@/actions/portfolio.actions";
 
 export const metadata: Metadata = {
   title: "Edit Portfolio",
@@ -21,7 +21,7 @@ export default async function EditPortfolioPage({
 }) {
   const resolvedParams = await params;
   const id = resolvedParams.id;
-  
+
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
@@ -29,24 +29,17 @@ export default async function EditPortfolioPage({
     redirect(ROUTES.LOGIN);
   }
 
-  // Fetch portfolio item
-  const { data: portfolio } = await supabase
-    .from("portfolio_items")
-    .select(`
-      *,
-      resources:portfolio_resources(*)
-    `)
-    .eq("id", id)
-    .single();
+  // getPortfolioWithResourcesAction already scopes the query to the
+  // logged-in user (`.eq("user_id", user.id)`), so a missing result here
+  // covers both "doesn't exist" and "not yours" without leaking which —
+  // in both cases the safest, correct move is back to the dashboard.
+  const portfolioRes = await getPortfolioWithResourcesAction(id);
 
-  if (!portfolio) {
-    notFound();
-  }
-
-  // Ensure user owns this portfolio
-  if (portfolio.user_id !== user.id) {
+  if (!portfolioRes.success || !portfolioRes.data) {
     redirect(ROUTES.DASHBOARD);
   }
+
+  const portfolio = portfolioRes.data;
 
   return (
     <main className="flex-1 p-4 md:p-6 lg:p-8 max-w-4xl mx-auto w-full">
@@ -68,7 +61,7 @@ export default async function EditPortfolioPage({
           </div>
         </div>
         
-        <PortfolioForm initialData={portfolio as unknown as PortfolioItemFull} />
+        <PortfolioForm initialData={portfolio} />
       </div>
     </main>
   );

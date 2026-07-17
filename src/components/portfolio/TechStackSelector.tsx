@@ -2,9 +2,11 @@
 
 import { useState, KeyboardEvent } from "react";
 import { X } from "lucide-react";
+import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { VALIDATION_LIMITS } from "@/constants";
 
 interface TechStackSelectorProps {
   value: string[];
@@ -18,20 +20,20 @@ export default function TechStackSelector({
   disabled,
 }: TechStackSelectorProps) {
   const [inputValue, setInputValue] = useState("");
+  const maxItems = VALIDATION_LIMITS.TECH_STACK_MAX_ITEMS;
 
   const handleAdd = () => {
     const trimmed = inputValue.trim();
     if (!trimmed) return;
-    
+
     // Prevent duplicates
     if (value.some((item) => item.toLowerCase() === trimmed.toLowerCase())) {
       setInputValue("");
       return;
     }
 
-    // Limit to 10 items
-    if (value.length >= 10) {
-      alert("Maksimal 10 teknologi");
+    if (value.length >= maxItems) {
+      toast.error(`Maksimal ${maxItems} teknologi`);
       return;
     }
 
@@ -58,13 +60,14 @@ export default function TechStackSelector({
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}
-          disabled={disabled || value.length >= 10}
+          maxLength={VALIDATION_LIMITS.TECH_STACK_ITEM_MAX}
+          disabled={disabled || value.length >= maxItems}
         />
         <Button 
           type="button" 
           variant="secondary" 
           onClick={handleAdd}
-          disabled={disabled || !inputValue.trim() || value.length >= 10}
+          disabled={disabled || !inputValue.trim() || value.length >= maxItems}
         >
           Tambah
         </Button>
@@ -74,7 +77,7 @@ export default function TechStackSelector({
         <div className="flex flex-wrap gap-2">
           {value.map((tech, index) => (
             <Badge 
-              key={index} 
+              key={tech} 
               variant="secondary" 
               className="px-3 py-1 text-sm flex items-center gap-1 group"
             >

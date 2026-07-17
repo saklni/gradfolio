@@ -7,7 +7,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { GraduationCap, Menu, LogOut, LayoutDashboard, User } from "lucide-react";
+import { GraduationCap, Menu, LogOut, LayoutDashboard, User, Share2 } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -155,6 +155,10 @@ export default function Navbar() {
                   <User className="mr-2 h-4 w-4" />
                   Profil
                 </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => router.push(ROUTES.DASHBOARD_SHARE)} className="cursor-pointer">
+                  <Share2 className="mr-2 h-4 w-4" />
+                  Bagikan Portofolio
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   className="cursor-pointer text-destructive focus:text-destructive"
@@ -248,6 +252,14 @@ export default function Navbar() {
                       >
                         <User className="h-4 w-4" />
                         Profil
+                      </Link>
+                      <Link
+                        href={ROUTES.DASHBOARD_SHARE}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="flex items-center gap-2 px-3 py-2.5 text-sm rounded-md hover:bg-muted"
+                      >
+                        <Share2 className="h-4 w-4" />
+                        Bagikan Portofolio
                       </Link>
                       <button
                         onClick={() => {

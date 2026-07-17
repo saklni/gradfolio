@@ -2,51 +2,12 @@
 // Gradfolio — Utility Functions
 // =============================================================================
 
-import { type ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
-
-/**
- * Merge Tailwind CSS classes with proper conflict resolution.
- * Re-exported from lib/utils.ts for convenience.
- */
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
-
-/**
- * Format a date string to Indonesian locale format.
- */
-export function formatDate(dateString: string): string {
-  return new Date(dateString).toLocaleDateString("id-ID", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-}
-
-/**
- * Format a relative time string (e.g., "2 hari lalu").
- */
-export function formatRelativeTime(dateString: string): string {
-  const date = new Date(dateString);
-  const now = new Date();
-  const diffMs = now.getTime() - date.getTime();
-  const diffSeconds = Math.floor(diffMs / 1000);
-  const diffMinutes = Math.floor(diffSeconds / 60);
-  const diffHours = Math.floor(diffMinutes / 60);
-  const diffDays = Math.floor(diffHours / 24);
-  const diffWeeks = Math.floor(diffDays / 7);
-  const diffMonths = Math.floor(diffDays / 30);
-
-  if (diffSeconds < 60) return "Baru saja";
-  if (diffMinutes < 60) return `${diffMinutes} menit lalu`;
-  if (diffHours < 24) return `${diffHours} jam lalu`;
-  if (diffDays < 7) return `${diffDays} hari lalu`;
-  if (diffWeeks < 4) return `${diffWeeks} minggu lalu`;
-  if (diffMonths < 12) return `${diffMonths} bulan lalu`;
-
-  return formatDate(dateString);
-}
+// `cn` lives in `@/lib/utils` (it needs to be importable from shadcn/ui
+// components without a circular dependency on this file). Re-exported here
+// so `@/utils` remains a single, convenient import surface for the rest of
+// the app instead of maintaining two separate implementations that could
+// drift out of sync.
+export { cn } from "@/lib/utils";
 
 /**
  * Truncate text to a maximum length with ellipsis.
@@ -54,18 +15,6 @@ export function formatRelativeTime(dateString: string): string {
 export function truncateText(text: string, maxLength: number): string {
   if (text.length <= maxLength) return text;
   return text.slice(0, maxLength).trimEnd() + "...";
-}
-
-/**
- * Generate a slug from a title string.
- */
-export function generateSlug(title: string): string {
-  return title
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-")
-    .trim();
 }
 
 /**
@@ -81,7 +30,10 @@ export function getInitials(name: string): string {
 }
 
 /**
- * Validate that a file is an allowed image type and within size limit.
+ * Validate that a file is an allowed image type and within the size limit.
+ * Used by every client-side image uploader (cover, avatar) so the size/type
+ * rules always match the single source of truth in `CLOUDINARY_CONFIG`
+ * instead of each component hardcoding its own (and drifting out of sync).
  */
 export function validateImageFile(
   file: File,
@@ -91,7 +43,9 @@ export function validateImageFile(
   if (!allowedTypes.includes(file.type)) {
     return {
       valid: false,
-      error: `Format file tidak didukung. Gunakan: ${allowedTypes.join(", ")}`,
+      error: `Format file tidak didukung. Gunakan: ${allowedTypes
+        .map((t) => t.replace("image/", "").toUpperCase())
+        .join(", ")}`,
     };
   }
   if (file.size > maxSize) {

@@ -177,6 +177,77 @@ export interface Database {
           },
         ];
       };
+      portfolio_collections: {
+        Row: {
+          id: string;
+          user_id: string;
+          title: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          title?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          title?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "portfolio_collections_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      collection_items: {
+        Row: {
+          id: string;
+          collection_id: string;
+          portfolio_item_id: string;
+          position: number;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          collection_id: string;
+          portfolio_item_id: string;
+          position?: number;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          collection_id?: string;
+          portfolio_item_id?: string;
+          position?: number;
+          created_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "collection_items_collection_id_fkey";
+            columns: ["collection_id"];
+            isOneToOne: false;
+            referencedRelation: "portfolio_collections";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "collection_items_portfolio_item_id_fkey";
+            columns: ["portfolio_item_id"];
+            isOneToOne: false;
+            referencedRelation: "portfolio_items";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;

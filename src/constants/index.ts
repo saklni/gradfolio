@@ -123,6 +123,10 @@ export const VALIDATION_LIMITS = {
   RESOURCE_LABEL_MAX: 100,
   PASSWORD_MIN: 8,
   PASSWORD_MAX: 72,
+  COLLECTION_TITLE_MIN: 3,
+  COLLECTION_TITLE_MAX: 100,
+  COLLECTION_ITEMS_MIN: 1,
+  COLLECTION_ITEMS_MAX: 20,
 } as const;
 
 /**
@@ -146,7 +150,9 @@ export const ROUTES = {
   DASHBOARD: "/dashboard",
   DASHBOARD_PROFILE: "/dashboard/profile",
   DASHBOARD_PORTFOLIO_NEW: "/dashboard/portfolio/new",
+  DASHBOARD_SHARE: "/dashboard/share",
   PORTFOLIO_SHARE: "/portfolio",
+  COLLECTION_SHARE: "/share",
 } as const;
 
 /**

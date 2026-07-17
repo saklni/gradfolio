@@ -11,7 +11,7 @@ import { z } from "zod";
 import { portfolioSchema, type ResourceFormData } from "@/schemas/portfolio.schema";
 import { createPortfolioAction, updatePortfolioAction } from "@/actions/portfolio.actions";
 import { ROUTES, CATEGORIES, JENIS_PORTFOLIO, type Category, type JenisPortfolio } from "@/constants";
-import type { PortfolioItemFull } from "@/types/portfolio.types";
+import type { PortfolioItemWithResources } from "@/types/portfolio.types";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -39,7 +39,7 @@ import TechStackSelector from "./TechStackSelector";
 import ResourceLinkFields from "./ResourceLinkFields";
 
 interface PortfolioFormProps {
-  initialData?: PortfolioItemFull;
+  initialData?: PortfolioItemWithResources;
 }
 
 export default function PortfolioForm({ initialData }: PortfolioFormProps) {
@@ -165,6 +165,7 @@ export default function PortfolioForm({ initialData }: PortfolioFormProps) {
           <CoverImageUploader
             value={coverFile || initialData?.cover_image_url || null}
             onChange={setCoverFile}
+            onError={(message) => toast.error(message)}
             disabled={isPending || isUploading}
           />
         </div>
@@ -247,7 +248,7 @@ export default function PortfolioForm({ initialData }: PortfolioFormProps) {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Tahun Pengerjaan <span className="text-destructive">*</span></FormLabel>
-                      <Select disabled={isPending} onValueChange={(val) => field.onChange(Number(val))} defaultValue={field.value.toString()}>
+                      <Select disabled={isPending} onValueChange={(val) => field.onChange(Number(val))} value={field.value.toString()}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Pilih Tahun" />

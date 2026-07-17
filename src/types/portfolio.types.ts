@@ -23,6 +23,12 @@ export type PortfolioResourceUpdate = Database["public"]["Tables"]["portfolio_re
 
 export type Institution = Database["public"]["Tables"]["institutions"]["Row"];
 
+export type PortfolioCollection = Database["public"]["Tables"]["portfolio_collections"]["Row"];
+export type PortfolioCollectionInsert = Database["public"]["Tables"]["portfolio_collections"]["Insert"];
+
+export type CollectionItem = Database["public"]["Tables"]["collection_items"]["Row"];
+export type CollectionItemInsert = Database["public"]["Tables"]["collection_items"]["Insert"];
+
 /**
  * Portfolio item with its resources and owner profile (for detail views).
  */
@@ -37,6 +43,25 @@ export type PortfolioItemWithOwner = PortfolioItem & {
 export type PortfolioItemFull = PortfolioItem & {
   resources: PortfolioResource[];
   profiles: Pick<Profile, "id" | "full_name" | "avatar_url" | "institution" | "program_studi" | "angkatan" | "bio">;
+};
+
+/**
+ * A portfolio collection (share bundle) with its portfolio items fully
+ * resolved (including each item's resources), used to render the public
+ * `/share/[id]` page.
+ */
+export type PortfolioCollectionWithItems = PortfolioCollection & {
+  profiles: Pick<Profile, "id" | "full_name" | "avatar_url" | "institution" | "program_studi" | "angkatan">;
+  items: PortfolioItemWithResources[];
+};
+
+/**
+ * Lightweight summary of a collection for the "Bagikan Portofolio" dashboard
+ * list — just enough to render a row (title, item count, created date)
+ * without fetching every item's full detail.
+ */
+export type PortfolioCollectionSummary = PortfolioCollection & {
+  item_count: number;
 };
 
 /**

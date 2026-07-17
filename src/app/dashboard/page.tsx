@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import { redirect } from "next/navigation";
+import { Plus, Share2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 import DashboardStats from "@/components/dashboard/DashboardStats";
 import PortfolioGrid from "@/components/portfolio/PortfolioGrid";
+import { getUserPortfoliosAction } from "@/actions/portfolio.actions";
 import { ROUTES } from "@/constants";
 
 export const metadata: Metadata = {
@@ -18,16 +20,12 @@ export default async function DashboardPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  if (!user) return null;
+  if (!user) {
+    redirect(ROUTES.LOGIN);
+  }
 
-  // Fetch portfolio items
-  const { data: portfolios } = await supabase
-    .from("portfolio_items")
-    .select("*")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false });
-
-  const items = portfolios || [];
+  const portfoliosRes = await getUserPortfoliosAction();
+  const items = portfoliosRes.success && portfoliosRes.data ? portfoliosRes.data : [];
 
   return (
     <main className="flex-1 p-4 md:p-6 lg:p-8 max-w-7xl mx-auto w-full">
@@ -39,13 +37,22 @@ export default async function DashboardPage() {
               Kelola seluruh karya dan portofolio Anda.
             </p>
           </div>
-          <Link
-            href={ROUTES.DASHBOARD_PORTFOLIO_NEW}
-            className={cn(buttonVariants({ variant: "default" }))}
-          >
-            <Plus className="mr-2 h-4 w-4" />
-            Tambah Karya
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+            <Link
+              href={ROUTES.DASHBOARD_SHARE}
+              className={cn(buttonVariants({ variant: "outline" }))}
+            >
+              <Share2 className="mr-2 h-4 w-4" />
+              Bagikan Portofolio
+            </Link>
+            <Link
+              href={ROUTES.DASHBOARD_PORTFOLIO_NEW}
+              className={cn(buttonVariants({ variant: "default" }))}
+            >
+              <Plus className="mr-2 h-4 w-4" />
+              Tambah Karya
+            </Link>
+          </div>
         </div>
 
         <DashboardStats portfolios={items} />

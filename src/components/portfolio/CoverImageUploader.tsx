@@ -4,18 +4,23 @@ import { useState, useRef } from "react";
 import Image from "next/image";
 import { Upload, X, Image as ImageIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { validateImageFile } from "@/utils";
+import { CLOUDINARY_CONFIG } from "@/constants";
 import { Button } from "@/components/ui/button";
 
 interface CoverImageUploaderProps {
   value: File | string | null;
   onChange: (file: File | null) => void;
   disabled?: boolean;
+  /** Called when the selected file fails validation (wrong type / too large). */
+  onError?: (message: string) => void;
 }
 
 export default function CoverImageUploader({
   value,
   onChange,
   disabled,
+  onError,
 }: CoverImageUploaderProps) {
   const [preview, setPreview] = useState<string | null>(
     typeof value === "string" ? value : value ? URL.createObjectURL(value) : null
@@ -27,9 +32,14 @@ export default function CoverImageUploader({
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Validate size (5MB limit)
-    if (file.size > 5 * 1024 * 1024) {
-      alert("Ukuran gambar maksimal 5MB.");
+    const validation = validateImageFile(
+      file,
+      CLOUDINARY_CONFIG.ALLOWED_IMAGE_TYPES,
+      CLOUDINARY_CONFIG.MAX_FILE_SIZE
+    );
+    if (!validation.valid) {
+      onError?.(validation.error ?? "File tidak valid.");
+      e.target.value = "";
       return;
     }
 
@@ -106,7 +116,8 @@ export default function CoverImageUploader({
             </div>
             <p className="text-sm font-medium mb-1">Klik untuk mengunggah gambar</p>
             <p className="text-xs text-muted-foreground">
-              Format didukung: JPG, PNG, WEBP (Max 5MB)
+              Format didukung: JPG, PNG, WEBP (Max{" "}
+              {(CLOUDINARY_CONFIG.MAX_FILE_SIZE / (1024 * 1024)).toFixed(0)}MB)
             </p>
             <p className="text-xs text-muted-foreground mt-2 max-w-[250px]">
               Gambar ini akan menjadi cover portfolio Anda di Project Showcase. Disarankan rasio 16:9.

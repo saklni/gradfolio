@@ -15,7 +15,8 @@ import Image from "next/image";
 
 import { profileSchema, onboardingSchema } from "@/schemas/profile.schema";
 import { updateProfileAction, completeOnboardingAction } from "@/actions/profile.actions";
-import { ROUTES } from "@/constants";
+import { ROUTES, CLOUDINARY_CONFIG } from "@/constants";
+import { validateImageFile } from "@/utils";
 import type { Profile } from "@/types/portfolio.types";
 
 import { Button } from "@/components/ui/button";
@@ -79,13 +80,14 @@ export default function ProfileForm({ initialData, mode }: ProfileFormProps) {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.size > 2 * 1024 * 1024) {
-      toast.error("Ukuran file maksimal 2MB");
-      return;
-    }
-
-    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
-      toast.error("Format file harus JPG, PNG, atau WEBP");
+    const validation = validateImageFile(
+      file,
+      CLOUDINARY_CONFIG.ALLOWED_IMAGE_TYPES,
+      CLOUDINARY_CONFIG.MAX_FILE_SIZE
+    );
+    if (!validation.valid) {
+      toast.error(validation.error ?? "File tidak valid.");
+      e.target.value = "";
       return;
     }
 
@@ -223,7 +225,9 @@ export default function ProfileForm({ initialData, mode }: ProfileFormProps) {
           <div className="flex flex-col gap-2">
             <h3 className="text-sm font-medium">Foto Profil</h3>
             <p className="text-xs text-muted-foreground max-w-xs">
-              Gunakan foto yang jelas dan profesional. Maksimal ukuran file 2MB dengan format JPG, PNG, atau WEBP.
+              Gunakan foto yang jelas dan profesional. Maksimal ukuran file{" "}
+              {(CLOUDINARY_CONFIG.MAX_FILE_SIZE / (1024 * 1024)).toFixed(0)}MB
+              dengan format JPG, PNG, atau WEBP.
             </p>
             <div className="flex gap-3 mt-2">
               <input
