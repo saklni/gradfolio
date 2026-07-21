@@ -14,7 +14,7 @@ if (typeof globalThis !== "undefined" && !("WebSocket" in globalThis)) {
   (globalThis as unknown as { WebSocket: unknown }).WebSocket = class WebSocket {};
 }
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
   });
