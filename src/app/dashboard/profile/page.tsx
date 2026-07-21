@@ -29,7 +29,7 @@ export default async function ProfileSettingsPage() {
     <main className="flex-1 p-4 md:p-6 lg:p-8 max-w-3xl mx-auto w-full">
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">
+          <h1 className="font-heading text-2xl font-bold tracking-tight">
             Pengaturan Profil
           </h1>
           <p className="text-muted-foreground">
@@ -38,7 +38,7 @@ export default async function ProfileSettingsPage() {
           </p>
         </div>
 
-        <div className="bg-card border border-border/50 text-card-foreground rounded-xl shadow-sm p-6 sm:p-8">
+        <div className="bg-card border border-border/50 text-card-foreground rounded-2xl shadow-soft p-6 sm:p-8">
           <ProfileForm initialData={profile} mode="settings" />
         </div>
       </div>

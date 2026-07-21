@@ -84,9 +84,9 @@ export default function RegisterForm() {
   }
 
   return (
-    <Card className="w-full">
+    <Card className="w-full border-border/50 shadow-soft-lg">
       <CardHeader>
-        <CardTitle className="text-2xl">Buat Akun</CardTitle>
+        <CardTitle className="font-heading text-2xl">Buat Akun</CardTitle>
         <CardDescription>
           Mulai bangun portfolio akademik Anda hari ini.
         </CardDescription>

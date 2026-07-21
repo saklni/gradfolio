@@ -72,8 +72,8 @@ export default function CoverImageUploader({
       
       <div 
         className={cn(
-          "relative flex flex-col items-center justify-center w-full min-h-[240px] rounded-lg border-2 border-dashed overflow-hidden transition-all",
-          !preview && "border-muted-foreground/25 hover:border-muted-foreground/50 hover:bg-muted/50 cursor-pointer",
+          "relative flex flex-col items-center justify-center w-full min-h-[240px] rounded-2xl border-2 border-dashed overflow-hidden transition-all duration-200",
+          !preview && "border-border hover:border-primary/50 hover:bg-primary/[0.03] cursor-pointer",
           disabled && "opacity-50 cursor-not-allowed pointer-events-none"
         )}
         onClick={() => !preview && !disabled && inputRef.current?.click()}
@@ -86,10 +86,11 @@ export default function CoverImageUploader({
               fill
               className="object-cover"
             />
-            <div className="absolute inset-0 bg-black/40 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
+            <div className="absolute inset-0 bg-black/50 opacity-0 hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-3 backdrop-blur-[2px]">
               <Button 
                 type="button" 
                 variant="secondary" 
+                className="rounded-full"
                 onClick={(e) => {
                   e.stopPropagation();
                   inputRef.current?.click();
@@ -102,6 +103,7 @@ export default function CoverImageUploader({
                 type="button" 
                 variant="destructive" 
                 size="icon"
+                className="rounded-full"
                 onClick={handleRemove}
                 disabled={disabled}
               >
@@ -111,7 +113,7 @@ export default function CoverImageUploader({
           </>
         ) : (
           <div className="flex flex-col items-center justify-center text-center p-6">
-            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+            <div className="h-14 w-14 rounded-2xl bg-gradient-brand-soft flex items-center justify-center mb-4">
               <ImageIcon className="h-6 w-6 text-primary" />
             </div>
             <p className="text-sm font-medium mb-1">Klik untuk mengunggah gambar</p>
@@ -126,7 +128,7 @@ export default function CoverImageUploader({
               type="button" 
               variant="outline" 
               size="sm" 
-              className="mt-4 pointer-events-none"
+              className="mt-4 pointer-events-none rounded-full"
             >
               <Upload className="mr-2 h-4 w-4" />
               Pilih File

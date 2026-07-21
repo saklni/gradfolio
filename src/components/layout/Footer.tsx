@@ -16,8 +16,10 @@ export default function Footer() {
           {/* Logo & Tagline */}
           <div className="space-y-2 max-w-xs">
             <div className="flex items-center gap-2">
-              <GraduationCap className="h-5 w-5 text-primary" />
-              <span className="text-sm font-semibold">
+              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-brand">
+                <GraduationCap className="h-4 w-4 text-white" />
+              </span>
+              <span className="font-heading text-sm font-semibold">
                 Grad<span className="text-primary">folio</span>
               </span>
             </div>

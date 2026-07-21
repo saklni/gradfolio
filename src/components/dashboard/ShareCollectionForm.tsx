@@ -85,8 +85,11 @@ export default function ShareCollectionForm({
 
   if (publishedItems.length === 0) {
     return (
-      <Card className="border-dashed">
-        <CardContent className="py-10 text-center space-y-2">
+      <Card className="border-dashed border-2 shadow-none">
+        <CardContent className="py-12 text-center space-y-3">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-muted">
+            <Share2 className="h-5 w-5 text-muted-foreground" />
+          </div>
           <p className="font-medium">Belum ada karya yang dipublikasikan</p>
           <p className="text-sm text-muted-foreground max-w-sm mx-auto">
             Publikasikan minimal satu karya terlebih dahulu (ubah status dari
@@ -99,29 +102,31 @@ export default function ShareCollectionForm({
 
   if (generatedUrl) {
     return (
-      <Card className="border-primary/30 bg-primary/5">
+      <Card className="border-primary/20 bg-gradient-brand-soft shadow-soft-lg">
         <CardContent className="py-6 space-y-4">
-          <div className="flex items-center gap-2 text-primary">
-            <Check className="h-5 w-5" />
-            <p className="font-semibold">Link bagikan berhasil dibuat!</p>
+          <div className="flex items-center gap-2.5 text-primary">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-success/15">
+              <Check className="h-4 w-4 text-success" />
+            </div>
+            <p className="font-heading font-semibold">Link bagikan berhasil dibuat!</p>
           </div>
           <p className="text-sm text-muted-foreground">
             Kirim link ini ke HRD, rekruter, atau dosen. Mereka akan melihat
             semua karya yang kamu pilih dalam satu halaman, tanpa perlu login.
           </p>
           <div className="flex flex-col sm:flex-row gap-2">
-            <Input readOnly value={generatedUrl} className="font-mono text-xs sm:text-sm" />
+            <Input readOnly value={generatedUrl} className="rounded-xl font-mono text-xs sm:text-sm bg-background" />
             <div className="flex gap-2 shrink-0">
-              <Button type="button" variant="outline" onClick={handleCopy}>
+              <Button type="button" variant="outline" className="rounded-xl" onClick={handleCopy}>
                 {copied ? (
-                  <Check className="h-4 w-4 mr-2 text-green-600" />
+                  <Check className="h-4 w-4 mr-2 text-success" />
                 ) : (
                   <Copy className="h-4 w-4 mr-2" />
                 )}
                 {copied ? "Disalin" : "Salin"}
               </Button>
               <a href={generatedUrl} target="_blank" rel="noopener noreferrer">
-                <Button type="button" variant="outline">
+                <Button type="button" variant="outline" className="rounded-xl">
                   <ExternalLink className="h-4 w-4" />
                   <span className="sr-only">Buka link</span>
                 </Button>
@@ -168,7 +173,7 @@ export default function ShareCollectionForm({
               <label
                 key={item.id}
                 htmlFor={`item-${item.id}`}
-                className="flex items-start gap-3 rounded-lg border border-border/60 p-3 cursor-pointer hover:bg-accent/40 transition-colors has-data-checked:border-primary has-data-checked:bg-primary/5"
+                className="flex items-start gap-3 rounded-xl border border-border/60 p-3.5 cursor-pointer transition-all hover:border-primary/30 hover:bg-primary/[0.03] has-data-checked:border-primary/40 has-data-checked:bg-primary/[0.05] has-data-checked:shadow-soft"
               >
                 <Checkbox
                   id={`item-${item.id}`}
@@ -193,7 +198,7 @@ export default function ShareCollectionForm({
           type="button"
           onClick={handleCreate}
           disabled={isPending || selectedIds.length === 0}
-          className="w-full sm:w-auto"
+          className="w-full rounded-full sm:w-auto"
         >
           {isPending ? (
             <Loader2 className="h-4 w-4 mr-2 animate-spin" />

@@ -8,7 +8,6 @@ import { getPublicCollectionAction } from "@/actions/collection.actions";
 import { RESOURCE_TYPE_LABELS, ROUTES } from "@/constants";
 import { RESOURCE_TYPE_ICONS } from "@/lib/resource-icons";
 import { Badge } from "@/components/ui/badge";
-import ShareButton from "@/components/portfolio/ShareButton";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
@@ -53,26 +52,22 @@ export default async function CollectionSharePage({
 
       <main className="flex-1 w-full max-w-5xl mx-auto px-4 py-8 md:py-12">
         {/* Header */}
-        <div className="space-y-6 mb-10">
+        <div className="animate-fade-in-up space-y-6 mb-10">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="space-y-2">
-              <Badge variant="secondary" className="gap-1.5">
+              <Badge variant="secondary" className="gap-1.5 rounded-full">
                 <FolderOpen className="h-3 w-3" />
                 {collection.items.length} Karya Dibagikan
               </Badge>
-              <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight">
+              <h1 className="font-heading text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight">
                 {collection.title}
               </h1>
             </div>
-            <ShareButton
-              title={collection.title}
-              text={`Lihat ${collection.items.length} karya dari ${author.full_name}`}
-            />
           </div>
 
           {/* Author strip */}
-          <div className="flex items-center gap-3 rounded-xl border border-border/60 bg-card p-4">
-            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-lg font-semibold text-primary overflow-hidden shrink-0">
+          <div className="flex items-center gap-3 rounded-2xl border border-border/60 bg-card p-4 shadow-soft">
+            <div className="h-12 w-12 rounded-full bg-gradient-brand-soft flex items-center justify-center text-lg font-heading font-semibold text-primary overflow-hidden shrink-0">
               {author.avatar_url ? (
                 <Image
                   src={author.avatar_url}
@@ -98,10 +93,11 @@ export default async function CollectionSharePage({
 
         {/* Items */}
         <div className="space-y-6">
-          {collection.items.map((item) => (
+          {collection.items.map((item, index) => (
             <article
               key={item.id}
-              className="rounded-xl border border-border/60 bg-card shadow-sm overflow-hidden"
+              className="hover-lift animate-fade-in-up rounded-2xl border border-border/60 bg-card shadow-soft overflow-hidden"
+              style={{ animationDelay: `${Math.min(index, 5) * 60}ms` }}
             >
               <div className="flex flex-col sm:flex-row">
                 {/* Cover */}
@@ -115,7 +111,7 @@ export default async function CollectionSharePage({
                       sizes="(max-width: 640px) 100vw, 256px"
                     />
                   ) : (
-                    <div className="flex h-full min-h-40 items-center justify-center bg-gradient-to-br from-primary/5 to-primary/10">
+                    <div className="flex h-full min-h-40 items-center justify-center bg-gradient-brand-soft">
                       <span className="text-4xl opacity-30">📁</span>
                     </div>
                   )}
@@ -133,7 +129,7 @@ export default async function CollectionSharePage({
                   </div>
 
                   <div>
-                    <h2 className="text-xl font-bold tracking-tight">{item.title}</h2>
+                    <h2 className="font-heading text-xl font-bold tracking-tight">{item.title}</h2>
                     <p className="text-sm text-muted-foreground mt-1 leading-relaxed">
                       {item.deskripsi_singkat}
                     </p>
@@ -145,7 +141,7 @@ export default async function CollectionSharePage({
                         <Badge
                           key={tech}
                           variant="secondary"
-                          className="px-2 py-0.5 text-xs font-normal bg-primary/10 text-primary"
+                          className="rounded-full px-2.5 py-0.5 text-xs font-normal bg-primary/[0.06] text-primary"
                         >
                           {tech}
                         </Badge>
@@ -171,7 +167,7 @@ export default async function CollectionSharePage({
                             href={resource.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="group inline-flex items-center gap-1.5 rounded-md border border-input bg-background px-2.5 py-1.5 text-xs font-medium shadow-xs hover:bg-accent hover:text-accent-foreground transition-colors"
+                            className="group inline-flex items-center gap-1.5 rounded-lg border border-input bg-background px-2.5 py-1.5 text-xs font-medium shadow-xs transition-all hover:border-primary/30 hover:bg-primary/[0.03] hover:-translate-y-0.5"
                           >
                             <ResourceIcon className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary transition-colors" />
                             {resource.label || typeLabel}
@@ -183,7 +179,7 @@ export default async function CollectionSharePage({
 
                   <div className="pt-1">
                     <Link
-                      href={`${ROUTES.PORTFOLIO_SHARE}/${item.id}`}
+                      href={`${ROUTES.PORTFOLIO_SHARE}/${item.id}?from=share`}
                       className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
                     >
                       Lihat detail lengkap

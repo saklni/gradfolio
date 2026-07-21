@@ -157,7 +157,7 @@ export default function PortfolioForm({ initialData }: PortfolioFormProps) {
         {/* SECTION 1: Cover Image */}
         <div className="space-y-4">
           <div>
-            <h2 className="text-lg font-semibold tracking-tight">Cover Portfolio</h2>
+            <h2 className="font-heading text-lg font-semibold tracking-tight">Cover Portfolio</h2>
             <p className="text-sm text-muted-foreground">
               Gambar menarik yang merepresentasikan karya Anda.
             </p>
@@ -173,7 +173,7 @@ export default function PortfolioForm({ initialData }: PortfolioFormProps) {
         {/* SECTION 2: Basic Info */}
         <div className="space-y-4">
           <div>
-            <h2 className="text-lg font-semibold tracking-tight">Informasi Dasar</h2>
+            <h2 className="font-heading text-lg font-semibold tracking-tight">Informasi Dasar</h2>
             <p className="text-sm text-muted-foreground">
               Detail utama tentang karya Anda.
             </p>
@@ -309,7 +309,7 @@ export default function PortfolioForm({ initialData }: PortfolioFormProps) {
         {/* SECTION 3: Descriptions */}
         <div className="space-y-4">
           <div>
-            <h2 className="text-lg font-semibold tracking-tight">Deskripsi</h2>
+            <h2 className="font-heading text-lg font-semibold tracking-tight">Deskripsi</h2>
             <p className="text-sm text-muted-foreground">
               Ceritakan lebih dalam tentang karya Anda.
             </p>
@@ -362,7 +362,7 @@ export default function PortfolioForm({ initialData }: PortfolioFormProps) {
         {/* SECTION 4: Tech Stack & Resources */}
         <div className="space-y-4">
           <div>
-            <h2 className="text-lg font-semibold tracking-tight">Teknologi & Tautan</h2>
+            <h2 className="font-heading text-lg font-semibold tracking-tight">Teknologi & Tautan</h2>
             <p className="text-sm text-muted-foreground">
               Tech stack yang digunakan dan referensi tautan karya.
             </p>

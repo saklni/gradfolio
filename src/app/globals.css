@@ -7,9 +7,9 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
+  --font-sans: var(--font-body);
   --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
+  --font-heading: var(--font-display);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -39,6 +39,8 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -49,78 +51,111 @@
 }
 
 /* =============================================================================
-   Light Theme — Indigo Primary + Amber Accent (Academic Modern)
+   Gradfolio Design System — "Electric Indigo"
+   Inspiration: Linear × Vercel × Stripe. Built for a Gen Z academic-portfolio
+   audience: confident, premium, high-contrast, but never loud.
+
+   Palette (named):
+     — Indigo   #4F46E5  → primary brand color, actions, links
+     — Violet   #7C3AED  → gradient partner for primary (hero, glows, CTAs)
+     — Cyan     #06B6D4  → secondary gradient stop, "live/tech" accent
+     — Emerald  #10B981  → success / published state only
+     — Canvas   near-white with a faint indigo tint, never pure #FFFFFF flat
    ============================================================================= */
 :root {
-  --background: oklch(0.985 0.002 247);
-  --foreground: oklch(0.175 0.02 260);
+  /* Premium type pairing — self-hosted via @fontsource, loaded in layout.tsx.
+     Heading = Geist Sans (tight, geometric, confident).
+     Body    = Manrope (warm, distinctive, highly readable at small sizes).
+     Mono    = Geist Mono (tags, share links, code-like metadata). */
+  --font-display: "Geist Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-body: "Manrope", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-geist-mono: "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --background: oklch(0.9880 0.0020 264);
+  --foreground: oklch(0.1600 0.0250 264);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.175 0.02 260);
+  --card-foreground: oklch(0.1600 0.0250 264);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.175 0.02 260);
-  --primary: oklch(0.457 0.24 264);
-  --primary-foreground: oklch(0.985 0.002 247);
-  --secondary: oklch(0.955 0.015 264);
-  --secondary-foreground: oklch(0.35 0.12 264);
-  --muted: oklch(0.955 0.01 264);
-  --muted-foreground: oklch(0.50 0.03 260);
-  --accent: oklch(0.82 0.16 75);
-  --accent-foreground: oklch(0.30 0.08 60);
+  --popover-foreground: oklch(0.1600 0.0250 264);
+  --primary: oklch(0.5300 0.2350 271);
+  --primary-foreground: oklch(0.9880 0.0050 264);
+  --secondary: oklch(0.9600 0.0130 271);
+  --secondary-foreground: oklch(0.3400 0.1300 271);
+  --muted: oklch(0.9600 0.0080 264);
+  --muted-foreground: oklch(0.4800 0.0250 264);
+  --accent: oklch(0.9500 0.0180 271);
+  --accent-foreground: oklch(0.3400 0.1300 271);
+  --success: oklch(0.6500 0.1650 165);
+  --success-foreground: oklch(0.9880 0.0050 165);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.905 0.015 264);
-  --input: oklch(0.905 0.015 264);
-  --ring: oklch(0.457 0.24 264);
-  --chart-1: oklch(0.457 0.24 264);
-  --chart-2: oklch(0.55 0.20 264);
-  --chart-3: oklch(0.65 0.15 264);
-  --chart-4: oklch(0.82 0.16 75);
-  --chart-5: oklch(0.70 0.14 75);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.975 0.005 264);
-  --sidebar-foreground: oklch(0.175 0.02 260);
-  --sidebar-primary: oklch(0.457 0.24 264);
-  --sidebar-primary-foreground: oklch(0.985 0.002 247);
-  --sidebar-accent: oklch(0.945 0.02 264);
-  --sidebar-accent-foreground: oklch(0.35 0.12 264);
-  --sidebar-border: oklch(0.905 0.015 264);
-  --sidebar-ring: oklch(0.457 0.24 264);
+  --border: oklch(0.9050 0.0130 264);
+  --input: oklch(0.9050 0.0130 264);
+  --ring: oklch(0.5300 0.2350 271);
+  --chart-1: oklch(0.5300 0.2350 271);
+  --chart-2: oklch(0.6300 0.2100 291);
+  --chart-3: oklch(0.7000 0.1550 220);
+  --chart-4: oklch(0.6500 0.1650 165);
+  --chart-5: oklch(0.7500 0.1650 75);
+  --radius: 0.75rem;
+  --sidebar: oklch(0.9750 0.0060 264);
+  --sidebar-foreground: oklch(0.1600 0.0250 264);
+  --sidebar-primary: oklch(0.5300 0.2350 271);
+  --sidebar-primary-foreground: oklch(0.9880 0.0050 264);
+  --sidebar-accent: oklch(0.9450 0.0180 271);
+  --sidebar-accent-foreground: oklch(0.3400 0.1300 271);
+  --sidebar-border: oklch(0.9050 0.0130 264);
+  --sidebar-ring: oklch(0.5300 0.2350 271);
+
+  /* Brand gradient stops — used for hero text, glows, premium CTAs.
+     Kept separate from shadcn semantic slots above so ordinary UI (hover
+     states, muted backgrounds) stays calm and only deliberate "signature"
+     moments get the full-saturation treatment. */
+  --brand-indigo: oklch(0.5300 0.2350 271);
+  --brand-violet: oklch(0.5800 0.2500 296);
+  --brand-cyan: oklch(0.7200 0.1450 220);
 }
 
 /* =============================================================================
    Dark Theme
    ============================================================================= */
 .dark {
-  --background: oklch(0.145 0.015 260);
-  --foreground: oklch(0.96 0.005 264);
-  --card: oklch(0.195 0.02 260);
-  --card-foreground: oklch(0.96 0.005 264);
-  --popover: oklch(0.195 0.02 260);
-  --popover-foreground: oklch(0.96 0.005 264);
-  --primary: oklch(0.60 0.24 264);
-  --primary-foreground: oklch(0.145 0.015 260);
-  --secondary: oklch(0.25 0.03 264);
-  --secondary-foreground: oklch(0.90 0.01 264);
-  --muted: oklch(0.25 0.02 260);
-  --muted-foreground: oklch(0.65 0.03 264);
-  --accent: oklch(0.75 0.16 75);
-  --accent-foreground: oklch(0.18 0.04 60);
+  --background: oklch(0.1550 0.0220 264);
+  --foreground: oklch(0.9600 0.0080 264);
+  --card: oklch(0.2000 0.0250 264);
+  --card-foreground: oklch(0.9600 0.0080 264);
+  --popover: oklch(0.2000 0.0250 264);
+  --popover-foreground: oklch(0.9600 0.0080 264);
+  --primary: oklch(0.6600 0.2200 271);
+  --primary-foreground: oklch(0.1550 0.0220 264);
+  --secondary: oklch(0.2650 0.0350 271);
+  --secondary-foreground: oklch(0.9100 0.0180 271);
+  --muted: oklch(0.2550 0.0220 264);
+  --muted-foreground: oklch(0.6600 0.0250 264);
+  --accent: oklch(0.2850 0.0450 271);
+  --accent-foreground: oklch(0.9100 0.0180 271);
+  --success: oklch(0.6800 0.1650 165);
+  --success-foreground: oklch(0.1400 0.0300 165);
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(0.28 0.025 264);
-  --input: oklch(0.28 0.025 264);
-  --ring: oklch(0.60 0.24 264);
-  --chart-1: oklch(0.60 0.24 264);
-  --chart-2: oklch(0.50 0.20 264);
-  --chart-3: oklch(0.70 0.15 264);
-  --chart-4: oklch(0.75 0.16 75);
-  --chart-5: oklch(0.65 0.14 75);
-  --sidebar: oklch(0.175 0.02 260);
-  --sidebar-foreground: oklch(0.96 0.005 264);
-  --sidebar-primary: oklch(0.60 0.24 264);
-  --sidebar-primary-foreground: oklch(0.145 0.015 260);
-  --sidebar-accent: oklch(0.25 0.03 264);
-  --sidebar-accent-foreground: oklch(0.90 0.01 264);
-  --sidebar-border: oklch(0.28 0.025 264);
-  --sidebar-ring: oklch(0.60 0.24 264);
+  --border: oklch(0.2900 0.0280 264);
+  --input: oklch(0.2900 0.0280 264);
+  --ring: oklch(0.6600 0.2200 271);
+  --chart-1: oklch(0.6600 0.2200 271);
+  --chart-2: oklch(0.6800 0.2100 296);
+  --chart-3: oklch(0.7200 0.1450 220);
+  --chart-4: oklch(0.6800 0.1650 165);
+  --chart-5: oklch(0.7500 0.1650 75);
+  --sidebar: oklch(0.1800 0.0230 264);
+  --sidebar-foreground: oklch(0.9600 0.0080 264);
+  --sidebar-primary: oklch(0.6600 0.2200 271);
+  --sidebar-primary-foreground: oklch(0.1550 0.0220 264);
+  --sidebar-accent: oklch(0.2650 0.0350 271);
+  --sidebar-accent-foreground: oklch(0.9100 0.0180 271);
+  --sidebar-border: oklch(0.2900 0.0280 264);
+  --sidebar-ring: oklch(0.6600 0.2200 271);
+
+  --brand-indigo: oklch(0.6600 0.2200 271);
+  --brand-violet: oklch(0.6800 0.2100 296);
+  --brand-cyan: oklch(0.7200 0.1450 220);
 }
 
 @layer base {
@@ -132,32 +167,152 @@
   }
   html {
     @apply font-sans;
+    scroll-behavior: smooth;
+  }
+  body {
+    line-height: 1.6;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+  h1 {
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+  ::selection {
+    background: color-mix(in oklch, var(--primary), transparent 75%);
   }
 }
 
 /* =============================================================================
-   Decorative blob animation — used behind hero sections for a modern,
-   subtly-alive backdrop. Respects reduced-motion preferences.
+   Signature utilities — brand gradients, glass, premium shadows & motion.
+   Everything here is additive Tailwind utility sugar; no component logic.
    ============================================================================= */
-@keyframes blob {
-  0%,
-  100% {
-    transform: translate(0px, 0px) scale(1);
+@layer utilities {
+  /* Gradient text used for the hero's "one memorable line" */
+  .text-gradient-brand {
+    background-image: linear-gradient(
+      100deg,
+      var(--brand-indigo) 0%,
+      var(--brand-violet) 55%,
+      var(--brand-cyan) 100%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
   }
-  33% {
-    transform: translate(30px, -40px) scale(1.1);
+
+  /* Solid brand gradient background, e.g. primary CTA / logo mark */
+  .bg-gradient-brand {
+    background-image: linear-gradient(
+      135deg,
+      var(--brand-indigo) 0%,
+      var(--brand-violet) 100%
+    );
   }
-  66% {
-    transform: translate(-20px, 20px) scale(0.95);
+
+  .bg-gradient-brand-soft {
+    background-image: linear-gradient(
+      135deg,
+      color-mix(in oklch, var(--brand-indigo), transparent 90%) 0%,
+      color-mix(in oklch, var(--brand-cyan), transparent 92%) 100%
+    );
+  }
+
+  /* Glassy translucent surface for navbars / floating panels */
+  .glass-surface {
+    background: color-mix(in oklch, var(--background), transparent 15%);
+    backdrop-filter: blur(16px) saturate(1.5);
+    -webkit-backdrop-filter: blur(16px) saturate(1.5);
+  }
+
+  /* Premium layered shadow — softer & deeper than default Tailwind shadows */
+  .shadow-soft {
+    box-shadow:
+      0 1px 2px 0 color-mix(in oklch, var(--foreground), transparent 95%),
+      0 8px 24px -8px color-mix(in oklch, var(--foreground), transparent 88%);
+  }
+  .shadow-soft-lg {
+    box-shadow:
+      0 2px 4px 0 color-mix(in oklch, var(--foreground), transparent 94%),
+      0 16px 40px -12px color-mix(in oklch, var(--foreground), transparent 82%);
+  }
+  .shadow-glow-primary {
+    box-shadow: 0 8px 30px -8px color-mix(in oklch, var(--primary), transparent 55%);
+  }
+
+  /* Hover-lift used across cards & interactive tiles */
+  .hover-lift {
+    transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .hover-lift:hover {
+    transform: translateY(-4px);
+  }
+
+  /* Subtle grid/dot backdrop for hero & empty states */
+  .bg-grid-fade {
+    background-image:
+      linear-gradient(to bottom, transparent, var(--background) 85%),
+      radial-gradient(color-mix(in oklch, var(--foreground), transparent 90%) 1px, transparent 1px);
+    background-size: 100% 100%, 24px 24px;
   }
 }
 
+/* =============================================================================
+   Motion — deliberate, restrained (150–400ms). Respects reduced-motion.
+   ============================================================================= */
+@keyframes blob {
+  0%, 100% { transform: translate(0px, 0px) scale(1); }
+  33% { transform: translate(30px, -40px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.95); }
+}
 .animate-blob {
-  animation: blob 14s infinite ease-in-out;
+  animation: blob 16s infinite ease-in-out;
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in-up {
+  animation: fade-in-up 500ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes shimmer {
+  from { background-position: -200% 0; }
+  to { background-position: 200% 0; }
+}
+.animate-shimmer {
+  background-image: linear-gradient(
+    100deg,
+    transparent 30%,
+    color-mix(in oklch, var(--foreground), transparent 92%) 50%,
+    transparent 70%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+@keyframes gradient-pan {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+.animate-gradient-pan {
+  background-size: 200% auto;
+  animation: gradient-pan 6s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-blob {
-    animation: none;
+  .animate-blob,
+  .animate-fade-in-up,
+  .animate-shimmer,
+  .animate-gradient-pan {
+    animation: none !important;
+  }
+  html {
+    scroll-behavior: auto;
   }
 }

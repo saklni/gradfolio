@@ -87,16 +87,18 @@ export default function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/80 backdrop-blur-lg supports-[backdrop-filter]:bg-background/60">
+    <header className="glass-surface sticky top-0 z-50 w-full border-b border-border/60">
       <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link
           href={ROUTES.HOME}
-          className="flex items-center gap-2 transition-opacity hover:opacity-80"
+          className="flex items-center gap-2.5 transition-opacity hover:opacity-85"
         >
-          <GraduationCap className="h-7 w-7 text-primary" />
-          <span className="text-xl font-bold tracking-tight">
-            Grad<span className="text-primary">folio</span>
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-brand shadow-glow-primary">
+            <GraduationCap className="h-5 w-5 text-white" />
+          </span>
+          <span className="font-heading text-xl font-bold tracking-tight">
+            Grad<span className="text-gradient-brand">folio</span>
           </span>
         </Link>
 
@@ -106,9 +108,9 @@ export default function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+              className={`px-3.5 py-2 text-sm font-medium rounded-lg transition-colors ${
                 pathname === link.href
-                  ? "text-primary bg-primary/5"
+                  ? "text-primary bg-primary/[0.07]"
                   : "text-muted-foreground hover:text-foreground hover:bg-muted"
               }`}
             >
@@ -122,7 +124,7 @@ export default function Navbar() {
           <ModeToggle />
           {user ? (
             <DropdownMenu>
-              <DropdownMenuTrigger className="relative flex h-9 w-9 items-center justify-center rounded-full outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring">
+              <DropdownMenuTrigger className="relative flex h-9 w-9 items-center justify-center rounded-full outline-none ring-1 ring-border hover:ring-primary/40 transition-all focus-visible:ring-2 focus-visible:ring-ring">
                   <Avatar className="h-9 w-9">
                     <AvatarImage
                       src={profile?.avatar_url || undefined}

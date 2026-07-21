@@ -1,5 +1,6 @@
 import { Folder, FolderCheck, FolderOpen } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 import { PortfolioItem } from "@/types/portfolio.types";
 
 interface DashboardStatsProps {
@@ -11,46 +12,46 @@ export default function DashboardStats({ portfolios }: DashboardStatsProps) {
   const published = portfolios.filter((p) => p.status === "published").length;
   const draft = portfolios.filter((p) => p.status === "draft").length;
 
+  const stats = [
+    {
+      label: "Total Portfolio",
+      value: total,
+      description: "Karya yang telah Anda buat",
+      icon: Folder,
+      iconClass: "bg-primary/10 text-primary",
+    },
+    {
+      label: "Published",
+      value: published,
+      description: "Tampil di Project Showcase",
+      icon: FolderCheck,
+      iconClass: "bg-success/15 text-success",
+    },
+    {
+      label: "Drafts",
+      value: draft,
+      description: "Belum dipublikasikan",
+      icon: FolderOpen,
+      iconClass: "bg-muted text-muted-foreground",
+    },
+  ];
+
   return (
     <div className="grid gap-4 md:grid-cols-3">
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Total Portfolio</CardTitle>
-          <Folder className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">{total}</div>
-          <p className="text-xs text-muted-foreground">
-            Karya yang telah Anda buat
-          </p>
-        </CardContent>
-      </Card>
-      
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Published</CardTitle>
-          <FolderCheck className="h-4 w-4 text-primary" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">{published}</div>
-          <p className="text-xs text-muted-foreground">
-            Tampil di Project Showcase
-          </p>
-        </CardContent>
-      </Card>
-      
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Drafts</CardTitle>
-          <FolderOpen className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">{draft}</div>
-          <p className="text-xs text-muted-foreground">
-            Belum dipublikasikan
-          </p>
-        </CardContent>
-      </Card>
+      {stats.map((stat) => (
+        <Card key={stat.label} className="hover-lift">
+          <CardContent className="flex items-start justify-between px-5">
+            <div className="space-y-1">
+              <p className="text-sm font-medium text-muted-foreground">{stat.label}</p>
+              <p className="font-heading text-3xl font-bold tracking-tight">{stat.value}</p>
+              <p className="text-xs text-muted-foreground">{stat.description}</p>
+            </div>
+            <div className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-xl", stat.iconClass)}>
+              <stat.icon className="h-5 w-5" />
+            </div>
+          </CardContent>
+        </Card>
+      ))}
     </div>
   );
 }

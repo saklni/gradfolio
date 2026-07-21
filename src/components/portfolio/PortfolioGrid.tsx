@@ -55,10 +55,12 @@ export default function PortfolioGrid({
       <motion.div 
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border/60 bg-muted/20 py-16 px-6"
+        className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-border/60 bg-muted/20 py-20 px-6"
       >
-        <span className="text-5xl mb-4">📂</span>
-        <p className="text-muted-foreground text-center">{emptyMessage}</p>
+        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-brand-soft text-3xl">
+          📂
+        </div>
+        <p className="text-muted-foreground text-center max-w-sm">{emptyMessage}</p>
       </motion.div>
     );
   }

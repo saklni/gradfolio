@@ -17,7 +17,7 @@ export default async function DashboardLayout({
 
   // Profile check is handled by middleware
   return (
-    <div className="flex min-h-screen flex-col bg-muted/40">
+    <div className="flex min-h-screen flex-col bg-grid-fade bg-muted/30">
       <Navbar />
       <div className="flex flex-1 overflow-hidden">
         <main className="flex-1 overflow-y-auto w-full">

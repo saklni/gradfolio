@@ -18,12 +18,12 @@ export default function NewPortfolioPage() {
         <div className="flex items-center gap-4">
           <Link
             href={ROUTES.DASHBOARD}
-            className={cn(buttonVariants({ variant: "ghost", size: "icon" }))}
+            className={cn(buttonVariants({ variant: "ghost", size: "icon" }), "rounded-full hover:bg-muted")}
           >
             <ChevronLeft className="h-5 w-5" />
           </Link>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">
+            <h1 className="font-heading text-2xl font-bold tracking-tight">
               Tambah Karya Baru
             </h1>
             <p className="text-muted-foreground">

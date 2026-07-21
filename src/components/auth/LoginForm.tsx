@@ -80,9 +80,9 @@ export default function LoginForm() {
   }
 
   return (
-    <Card className="w-full">
+    <Card className="w-full border-border/50 shadow-soft-lg">
       <CardHeader>
-        <CardTitle className="text-2xl">Selamat Datang Kembali</CardTitle>
+        <CardTitle className="font-heading text-2xl">Selamat Datang Kembali</CardTitle>
         <CardDescription>
           Masuk ke akun Anda untuk mengelola portfolio.
         </CardDescription>

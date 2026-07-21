@@ -60,9 +60,11 @@ export default function CollectionList({
 
   if (collections.length === 0) {
     return (
-      <p className="text-sm text-muted-foreground text-center py-6">
-        Belum ada link bagikan yang dibuat.
-      </p>
+      <div className="rounded-2xl border border-dashed border-2 py-10 text-center">
+        <p className="text-sm text-muted-foreground">
+          Belum ada link bagikan yang dibuat.
+        </p>
+      </div>
     );
   }
 
@@ -70,15 +72,17 @@ export default function CollectionList({
     <>
       <div className="space-y-3">
         {collections.map((collection) => (
-          <Card key={collection.id}>
+          <Card key={collection.id} className="hover-lift">
             <CardContent className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="min-w-0 space-y-1">
                 <div className="flex items-center gap-2">
-                  <Link2 className="h-4 w-4 text-muted-foreground shrink-0" />
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-primary/[0.07]">
+                    <Link2 className="h-3.5 w-3.5 text-primary" />
+                  </span>
                   <p className="font-medium truncate">{collection.title}</p>
                 </div>
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <Badge variant="secondary" className="font-normal">
+                  <Badge variant="secondary" className="rounded-full font-normal">
                     {collection.item_count} karya
                   </Badge>
                   <span>
@@ -97,10 +101,11 @@ export default function CollectionList({
                   type="button"
                   variant="outline"
                   size="sm"
+                  className="rounded-lg"
                   onClick={() => handleCopy(collection.id)}
                 >
                   {copiedId === collection.id ? (
-                    <Check className="h-3.5 w-3.5 mr-1.5 text-green-600" />
+                    <Check className="h-3.5 w-3.5 mr-1.5 text-success" />
                   ) : (
                     <Copy className="h-3.5 w-3.5 mr-1.5" />
                   )}
@@ -112,7 +117,7 @@ export default function CollectionList({
                   rel="noopener noreferrer"
                   aria-label="Buka link"
                 >
-                  <Button type="button" variant="ghost" size="icon">
+                  <Button type="button" variant="ghost" size="icon" className="rounded-lg">
                     <ExternalLink className="h-4 w-4" />
                   </Button>
                 </a>
@@ -120,7 +125,7 @@ export default function CollectionList({
                   type="button"
                   variant="ghost"
                   size="icon"
-                  className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                  className="rounded-lg text-destructive hover:text-destructive hover:bg-destructive/10"
                   onClick={() => setDeleteTarget(collection)}
                   aria-label="Hapus link"
                 >

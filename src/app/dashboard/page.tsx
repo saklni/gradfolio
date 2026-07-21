@@ -30,9 +30,9 @@ export default async function DashboardPage() {
   return (
     <main className="flex-1 p-4 md:p-6 lg:p-8 max-w-7xl mx-auto w-full">
       <div className="space-y-8">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 animate-fade-in-up">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
+            <h1 className="font-heading text-2xl font-bold tracking-tight">Dashboard</h1>
             <p className="text-muted-foreground">
               Kelola seluruh karya dan portofolio Anda.
             </p>

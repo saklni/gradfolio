@@ -63,11 +63,11 @@ export default function ShowcaseFilters() {
     <div className="space-y-6 w-full max-w-5xl mx-auto">
       {/* Search Bar */}
       <div className="relative max-w-xl mx-auto">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
           type="text"
           placeholder="Cari karya mahasiswa (contoh: Sistem Inventaris)..."
-          className="w-full pl-10 pr-10 rounded-full bg-background/50 backdrop-blur-sm border-primary/20 focus-visible:ring-primary/30"
+          className="w-full h-12 pl-11 pr-10 rounded-full bg-background shadow-soft border-primary/15 focus-visible:ring-primary/10"
           value={searchValue}
           onChange={onSearchChange}
         />

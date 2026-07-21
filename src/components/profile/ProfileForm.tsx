@@ -200,26 +200,28 @@ export default function ProfileForm({ initialData, mode }: ProfileFormProps) {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         {/* Avatar Section */}
-        <div className="flex flex-col sm:flex-row items-center gap-6 pb-6 border-b border-border/40">
-          <div className="relative h-24 w-24 overflow-hidden rounded-full border border-border bg-muted">
-            {avatarPreview ? (
-              <Image
-                src={avatarPreview}
-                alt="Avatar preview"
-                fill
-                className="object-cover"
-              />
-            ) : (
-              <div className="flex h-full w-full items-center justify-center text-3xl font-medium text-muted-foreground bg-primary/5">
-                {form.watch("full_name")?.charAt(0).toUpperCase() || "U"}
-              </div>
-            )}
-            
-            {isUploading && (
-              <div className="absolute inset-0 flex items-center justify-center bg-background/50 backdrop-blur-sm">
-                <Loader2 className="h-6 w-6 animate-spin text-primary" />
-              </div>
-            )}
+        <div className="flex flex-col sm:flex-row items-center gap-6 pb-6 border-b border-border/60">
+          <div className="relative h-24 w-24 shrink-0 rounded-full bg-gradient-brand p-[3px] shadow-glow-primary">
+            <div className="relative h-full w-full overflow-hidden rounded-full border-2 border-background bg-muted">
+              {avatarPreview ? (
+                <Image
+                  src={avatarPreview}
+                  alt="Avatar preview"
+                  fill
+                  className="object-cover"
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center text-3xl font-heading font-semibold text-primary bg-gradient-brand-soft">
+                  {form.watch("full_name")?.charAt(0).toUpperCase() || "U"}
+                </div>
+              )}
+
+              {isUploading && (
+                <div className="absolute inset-0 flex items-center justify-center bg-background/50 backdrop-blur-sm">
+                  <Loader2 className="h-6 w-6 animate-spin text-primary" />
+                </div>
+              )}
+            </div>
           </div>
           
           <div className="flex flex-col gap-2">

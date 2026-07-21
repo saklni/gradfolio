@@ -36,15 +36,15 @@ export default async function HomePage({ searchParams }: HomePageProps) {
 
       <main className="flex-1 flex flex-col items-center w-full">
         {/* Hero Section */}
-        <div className="relative w-full overflow-hidden">
+        <div className="relative w-full overflow-hidden bg-grid-fade">
           {/* Decorative animated gradient blobs */}
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
           >
             <div className="absolute -top-32 left-1/2 h-[420px] w-[420px] -translate-x-[70%] rounded-full bg-primary/20 blur-3xl animate-blob" />
-            <div className="absolute -top-10 left-1/2 h-[380px] w-[380px] translate-x-[10%] rounded-full bg-accent/25 blur-3xl animate-blob [animation-delay:2s]" />
-            <div className="absolute top-40 left-1/2 h-[320px] w-[320px] -translate-x-[110%] rounded-full bg-primary/10 blur-3xl animate-blob [animation-delay:4s]" />
+            <div className="absolute -top-10 left-1/2 h-[380px] w-[380px] translate-x-[10%] rounded-full bg-[oklch(0.72_0.145_220)]/20 blur-3xl animate-blob [animation-delay:2s]" />
+            <div className="absolute top-40 left-1/2 h-[320px] w-[320px] -translate-x-[110%] rounded-full bg-[oklch(0.58_0.25_296)]/15 blur-3xl animate-blob [animation-delay:4s]" />
           </div>
 
           <div className="max-w-screen-xl mx-auto px-4 py-16 md:py-28">
@@ -53,7 +53,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
         </div>
 
         {/* Filters and Grid */}
-        <section className="w-full max-w-screen-xl mx-auto px-4 pb-24 space-y-8">
+        <section id="showcase" className="w-full max-w-screen-xl mx-auto px-4 pb-24 space-y-8 scroll-mt-20">
           <ShowcaseFilters />
           <PortfolioGrid
             items={portfolios}

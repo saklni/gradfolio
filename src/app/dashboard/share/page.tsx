@@ -37,7 +37,7 @@ export default async function ShareCollectionPage() {
     <main className="flex-1 p-4 md:p-6 lg:p-8 max-w-3xl mx-auto w-full">
       <div className="space-y-8">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Bagikan Portofolio</h1>
+          <h1 className="font-heading text-2xl font-bold tracking-tight">Bagikan Portofolio</h1>
           <p className="text-muted-foreground">
             Pilih beberapa karya sekaligus, buat satu link, lalu kirim ke HRD
             atau recruiter saat melamar magang atau pekerjaan. Mereka bisa

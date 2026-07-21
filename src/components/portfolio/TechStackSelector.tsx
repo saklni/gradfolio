@@ -66,6 +66,7 @@ export default function TechStackSelector({
         <Button 
           type="button" 
           variant="secondary" 
+          className="rounded-xl"
           onClick={handleAdd}
           disabled={disabled || !inputValue.trim() || value.length >= maxItems}
         >
@@ -79,14 +80,14 @@ export default function TechStackSelector({
             <Badge 
               key={tech} 
               variant="secondary" 
-              className="px-3 py-1 text-sm flex items-center gap-1 group"
+              className="gap-1.5 rounded-full bg-primary/[0.06] px-3 py-1.5 text-sm text-primary group"
             >
               {tech}
               <button
                 type="button"
                 onClick={() => handleRemove(index)}
                 disabled={disabled}
-                className="ml-1 text-muted-foreground hover:text-foreground focus:outline-none disabled:opacity-50"
+                className="text-primary/50 hover:text-primary focus:outline-none disabled:opacity-50"
               >
                 <X className="h-3 w-3" />
                 <span className="sr-only">Hapus {tech}</span>
@@ -95,7 +96,7 @@ export default function TechStackSelector({
           ))}
         </div>
       ) : (
-        <p className="text-xs text-muted-foreground">
+        <p className="rounded-xl border border-dashed border-border px-4 py-3 text-xs text-muted-foreground">
           Belum ada teknologi yang ditambahkan.
         </p>
       )}
