@@ -61,6 +61,7 @@ export default async function PortfolioSharePage({
   const isSharedView = from === "share";
 
   const item = res.data;
+  const isOwner = user?.id === item.user_id;
   const author = item.profiles;
 
   return (
@@ -187,7 +188,7 @@ export default async function PortfolioSharePage({
               </div>
 
               {/* Resources */}
-              {(!isGuest || isSharedView) && item.resources && item.resources.length > 0 && (
+              {(isOwner || isSharedView) && item.resources && item.resources.length > 0 && (
                 <div className="rounded-2xl border border-border/60 bg-card p-5 shadow-soft space-y-4">
                   <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Tautan Terkait</h3>
                   <div className="flex flex-col gap-2">
