@@ -10,10 +10,19 @@ import type { ActionResponse } from "@/types/portfolio.types";
 
 /**
  * Register a new user account.
+ *
+ * IMPORTANT: If email confirmation is disabled on the Supabase project,
+ * `auth.signUp` already returns an active `session` and the SSR client
+ * (called from a Server Action, so it CAN write cookies) sets the session
+ * cookie right away — the user is technically already logged in. We surface
+ * that via `data.autoLoggedIn` so the client can skip the login page and
+ * send the user straight to onboarding. If email confirmation IS required,
+ * `session` will be null and the user must verify their email before they
+ * can log in — in that case we fall back to the old "check your email" flow.
  */
 export async function registerAction(
   formData: FormData
-): Promise<ActionResponse> {
+): Promise<ActionResponse<{ autoLoggedIn: boolean }>> {
   const rawData = {
     full_name: formData.get("full_name") as string,
     email: formData.get("email") as string,
@@ -71,9 +80,17 @@ export async function registerAction(
       }
     }
 
+    // `data.session` is only present when email confirmation is disabled on
+    // the Supabase project. When present, the cookies above are already set
+    // and the user is fully authenticated — no separate login step needed.
+    const autoLoggedIn = !!data.session;
+
     return {
       success: true,
-      message: "Akun berhasil dibuat. Silakan cek email Anda untuk verifikasi.",
+      message: autoLoggedIn
+        ? "Akun berhasil dibuat. Mengarahkan ke pengaturan profil..."
+        : "Akun berhasil dibuat. Silakan cek email Anda untuk verifikasi.",
+      data: { autoLoggedIn },
     };
   } catch (error) {
     console.error("Register action error:", error);

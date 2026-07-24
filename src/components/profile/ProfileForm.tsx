@@ -208,6 +208,11 @@ export default function ProfileForm({ initialData, mode }: ProfileFormProps) {
                   src={avatarPreview}
                   alt="Avatar preview"
                   fill
+                  // Locally selected files are previewed via a blob: object
+                  // URL. next/image's optimizer tries to fetch that URL from
+                  // the server, where it doesn't exist, and throws. Only
+                  // remote (Cloudinary) URLs should go through optimization.
+                  unoptimized={avatarPreview.startsWith("blob:") || avatarPreview.startsWith("data:")}
                   className="object-cover"
                 />
               ) : (

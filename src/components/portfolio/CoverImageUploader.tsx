@@ -43,7 +43,11 @@ export default function CoverImageUploader({
       return;
     }
 
-    // Generate preview
+    // Generate preview (revoke the previous blob URL first, if any, so we
+    // don't leak memory when the user swaps the image multiple times)
+    if (preview?.startsWith("blob:")) {
+      URL.revokeObjectURL(preview);
+    }
     const objectUrl = URL.createObjectURL(file);
     setPreview(objectUrl);
     onChange(file);
@@ -52,6 +56,9 @@ export default function CoverImageUploader({
   const handleRemove = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    if (preview?.startsWith("blob:")) {
+      URL.revokeObjectURL(preview);
+    }
     setPreview(null);
     onChange(null);
     if (inputRef.current) {
@@ -84,6 +91,17 @@ export default function CoverImageUploader({
               src={preview}
               alt="Cover preview"
               fill
+              // `preview` is a blob: object URL for a freshly-selected local
+              // file (before it's uploaded to Cloudinary) or an https:// URL
+              // for an already-uploaded cover. next/image's built-in
+              // optimizer tries to fetch the src from the SERVER — which
+              // works for the real Cloudinary URL, but a blob: URL only
+              // exists in the browser tab that created it, so the server
+              // fetch fails and next/image throws "Invalid src prop" /
+              // renders a broken image. This is what caused the error when
+              // adding a new portfolio item and picking a cover image.
+              // Local previews must be rendered unoptimized.
+              unoptimized={preview.startsWith("blob:") || preview.startsWith("data:")}
               className="object-cover"
             />
             <div className="absolute inset-0 bg-black/50 opacity-0 hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-3 backdrop-blur-[2px]">

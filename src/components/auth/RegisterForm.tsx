@@ -66,7 +66,17 @@ export default function RegisterForm() {
 
       if (response.success) {
         toast.success(response.message);
-        router.push(ROUTES.LOGIN);
+
+        if (response.data?.autoLoggedIn) {
+          // Session cookie is already set by the server action — send the
+          // user straight to onboarding instead of making them log in again.
+          // A hard navigation ensures the middleware re-evaluates auth state.
+          window.location.href = ROUTES.ONBOARDING;
+        } else {
+          // Email confirmation is required on this project — the user must
+          // verify their email before a session can be created.
+          router.push(ROUTES.LOGIN);
+        }
       } else {
         toast.error(response.message);
         // Map field errors if any
